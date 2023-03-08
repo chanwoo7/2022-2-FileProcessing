@@ -2,34 +2,30 @@
 #include <stack>
 using namespace std;
 
-// 20213062 ÀÌÂù¿ì - B-Tree ¸®Æ÷Æ®
-
-// - ±â´É ¼º°ø ¿©ºÎ
-// »ğÀÔ: ½ÇÆĞ
-// »èÁ¦: ½ÇÆĞ
+// 20213062 ì´ì°¬ìš° - B-Tree ë¦¬í¬íŠ¸
 
 struct Node {
-    int n;  // °¡Áö°í ÀÖ´Â Å°ÀÇ °³¼ö
-    int* K;  // Å°µéÀ» ´ã°í ÀÖ´Â ¹è¿­
-    Node** P;  // Æ÷ÀÎÅÍ(ÀÚ½Ä ³ëµå)µéÀ» ´ã°í ÀÖ´Â ¹è¿­
+    int n;  // ê°€ì§€ê³  ìˆëŠ” í‚¤ì˜ ê°œìˆ˜
+    int* K;  // í‚¤ë“¤ì„ ë‹´ê³  ìˆëŠ” ë°°ì—´
+    Node** P;  // í¬ì¸í„°(ìì‹ ë…¸ë“œ)ë“¤ì„ ë‹´ê³  ìˆëŠ” ë°°ì—´
 
 public:
     Node(int m) {
         n = 0;
-        K = new int[m];  // Å° ¹è¿­ »ı¼º
-        P = new Node * [m + 1];  // Æ÷ÀÎÅÍ ¹è¿­ »ı¼º
+        K = new int[m];  // í‚¤ ë°°ì—´ ìƒì„±
+        P = new Node * [m + 1];  // í¬ì¸í„° ë°°ì—´ ìƒì„±
 
-        for (int i = 0; i < m; i++) {  // Å° ¹è¿­ ÃÊ±âÈ­
+        for (int i = 0; i < m; i++) {  // í‚¤ ë°°ì—´ ì´ˆê¸°í™”
             K[i] = 0;
         }
-        for (int i = 0; i < m + 1; i++) {  // Æ÷ÀÎÅÍ ¹è¿­ ÃÊ±âÈ­
+        for (int i = 0; i < m + 1; i++) {  // í¬ì¸í„° ë°°ì—´ ì´ˆê¸°í™”
             P[i] = nullptr;
         }
     }
 };
 
 Node* getNode(int m) {
-    Node* newNode = new Node(m);  // Node ±¸Á¶Ã¼ÀÇ »ı¼ºÀÚ¸¦ ÀÌ¿ëÇØ »õ ³ëµå »ı¼º
+    Node* newNode = new Node(m);  // Node êµ¬ì¡°ì²´ì˜ ìƒì„±ìë¥¼ ì´ìš©í•´ ìƒˆ ë…¸ë“œ ìƒì„±
     return newNode;
 }
 
@@ -44,10 +40,10 @@ bool searchPath(Node*& T, int m, int key, stack<Node*>& stack) {
         while (i < x->n && key > x->K[i])
             i++;
 
-        // »ğÀÔÇÒ Å°¸¦ ¾ÆÁ÷ ¹ß°ßÇÏÁö ¸øÇÔ
+        // ì‚½ì…í•  í‚¤ë¥¼ ì•„ì§ ë°œê²¬í•˜ì§€ ëª»í•¨
         stack.push(x);
 
-        // »ğÀÔÇÒ Å°¸¦ ¹ß°ßÇÔ. »ğÀÔ ºÒ°¡.
+        // ì‚½ì…í•  í‚¤ë¥¼ ë°œê²¬í•¨. ì‚½ì… ë¶ˆê°€.
         if (i < x->n && key == x->K[i])
             return true;
     } while ((x = x->P[i]) != nullptr);
@@ -57,7 +53,7 @@ bool searchPath(Node*& T, int m, int key, stack<Node*>& stack) {
 }
 
 void insertKey(Node*& T, int m, Node*& x, Node*& y, int newKey) {
-    // newKeyº¸´Ù Å« Å°µéÀ» ¿À¸¥ÂÊÀ¸·Î ÇÑ Ä­¾¿ ÀÌµ¿
+    // newKeyë³´ë‹¤ í° í‚¤ë“¤ì„ ì˜¤ë¥¸ìª½ìœ¼ë¡œ í•œ ì¹¸ì”© ì´ë™
     int i = x->n - 1;
     
     while (i >= 0 && newKey < x->K[i]) {
@@ -66,16 +62,16 @@ void insertKey(Node*& T, int m, Node*& x, Node*& y, int newKey) {
         i--;
     }
 
-    // newKey¸¦ »ğÀÔ
+    // newKeyë¥¼ ì‚½ì…
     x->K[i + 1] = newKey;
     x->P[i + 1] = y;
     x->n++;
 }
 
 Node* splitNode(Node*& T, int m, Node*& x, Node*& y, int& newKey) {
-    Node* tempNode = getNode(m);  // ¿À¹öÇÃ·Î¸¦ À§ÇÑ ÀÓ½Ã ³ëµå (x¿Í newKey¸¦ ÀúÀå)
+    Node* tempNode = getNode(m);  // ì˜¤ë²„í”Œë¡œë¥¼ ìœ„í•œ ì„ì‹œ ë…¸ë“œ (xì™€ newKeyë¥¼ ì €ì¥)
 
-    // xÀÇ °ªµéÀ» tempNode¿¡ º¹»ç
+    // xì˜ ê°’ë“¤ì„ tempNodeì— ë³µì‚¬
     tempNode->n = x->n;
     for (int i = 0; i < m; i++) {
         tempNode->K[i] = x->K[i];
@@ -86,9 +82,9 @@ Node* splitNode(Node*& T, int m, Node*& x, Node*& y, int& newKey) {
 
     insertKey(T, m, tempNode, y, newKey);
 
-    newKey = tempNode->K[T->n / 2];  // ºĞÇÒ ±âÁØÀÎ Áß¾Ó°ª
+    newKey = tempNode->K[T->n / 2];  // ë¶„í•  ê¸°ì¤€ì¸ ì¤‘ì•™ê°’
 
-    x->n = 0;  // centerKey ÀÌÀü °ªÀ» ³ëµå x·Î º¹»ç
+    x->n = 0;  // centerKey ì´ì „ ê°’ì„ ë…¸ë“œ xë¡œ ë³µì‚¬
     int i = 0;
     while (tempNode->K[i] < newKey) {
         x->K[i] = tempNode->K[i];
@@ -98,7 +94,7 @@ Node* splitNode(Node*& T, int m, Node*& x, Node*& y, int& newKey) {
     }
     x->P[i] = tempNode->P[i];
 
-    Node* newNode = getNode(m);  // centerKey ÀÌÈÄ °ªÀ» ³ëµå newNode·Î º¹»ç
+    Node* newNode = getNode(m);  // centerKey ì´í›„ ê°’ì„ ë…¸ë“œ newNodeë¡œ ë³µì‚¬
     i++;
     while (i <= tempNode->n) {
         newNode->K[newNode->n] = tempNode->K[i];
@@ -111,7 +107,7 @@ Node* splitNode(Node*& T, int m, Node*& x, Node*& y, int& newKey) {
 }
 
 bool insertBT(Node*& T, int m, int newKey) {
-    // ·çÆ® ³ëµå »ı¼º
+    // ë£¨íŠ¸ ë…¸ë“œ ìƒì„±
     if (T == nullptr) {
         T = getNode(m);
         T->K[0] = newKey;
@@ -119,27 +115,27 @@ bool insertBT(Node*& T, int m, int newKey) {
         return true;
     }
 
-    // newKey¸¦ »ğÀÔÇÒ ³ëµåÀÇ °æ·Î¸¦ Å½»öÇÏ¸ç, ½ºÅÃ¿¡ °æ·Î ÀúÀå
+    // newKeyë¥¼ ì‚½ì…í•  ë…¸ë“œì˜ ê²½ë¡œë¥¼ íƒìƒ‰í•˜ë©°, ìŠ¤íƒì— ê²½ë¡œ ì €ì¥
     stack<Node*> stack;
     bool found = searchPath(T, m, newKey, stack);
 
     if (found == true)
         return false;
 
-    // newKey°¡ ¾øÀ¸¹Ç·Î, T¿¡ »ğÀÔ (ÀÌÁ¦ x´Â null)
+    // newKeyê°€ ì—†ìœ¼ë¯€ë¡œ, Tì— ì‚½ì… (ì´ì œ xëŠ” null)
     bool finished = false;
     Node* x = stack.top();
     stack.pop();
     Node* y = nullptr;
 
     do {
-        // Overflow ¹ß»ı ¿©ºÎ °Ë»ç
-        if (x->n < m - 1) {  // Overflow ¹ß»ı ¾ÈÇÔ. newKey¸¦ ³ëµå xÀÇ ¿Ã¹Ù¸¥ À§Ä¡¿¡ »ğÀÔ
+        // Overflow ë°œìƒ ì—¬ë¶€ ê²€ì‚¬
+        if (x->n < m - 1) {  // Overflow ë°œìƒ ì•ˆí•¨. newKeyë¥¼ ë…¸ë“œ xì˜ ì˜¬ë°”ë¥¸ ìœ„ì¹˜ì— ì‚½ì…
             insertKey(T, m, x, y, newKey);
             finished = true;
         }
-        else {  // Overflow ¹ß»ı
-            // x¸¦ newKey¸¦ ±âÁØÀ¸·Î ºĞÇÒ, ºĞÇÒµÈ ³ëµå ¹İÈ¯
+        else {  // Overflow ë°œìƒ
+            // xë¥¼ newKeyë¥¼ ê¸°ì¤€ìœ¼ë¡œ ë¶„í• , ë¶„í• ëœ ë…¸ë“œ ë°˜í™˜
             y = splitNode(T, m, x, y, newKey);
 
             if (!stack.empty()) {
@@ -161,14 +157,14 @@ bool insertBT(Node*& T, int m, int newKey) {
 }
 
 void inorderBT(Node* T) {
-    // T°¡ leaf ³ëµåÀÏ ¶§ Å°°ª Ãâ·Â
+    // Tê°€ leaf ë…¸ë“œì¼ ë•Œ í‚¤ê°’ ì¶œë ¥
     if (T->P[0] == nullptr) {
         for (int i = 0; i < T->n; i++) {
             cout << T->K[i] << " ";
         }
     }
     
-    // T°¡ leaf ³ëµå°¡ ¾Æ´Ò ¶§ ÀÚ½Ä ³ëµåµé Àç±ÍÀû È£Ãâ
+    // Tê°€ leaf ë…¸ë“œê°€ ì•„ë‹ ë•Œ ìì‹ ë…¸ë“œë“¤ ì¬ê·€ì  í˜¸ì¶œ
     int i = 0;
     while (T->P[0] != nullptr && i < T->n) {
         inorderBT(T->P[i++]);
@@ -177,7 +173,7 @@ void inorderBT(Node* T) {
 
 int main(void) {
     int m = 3;
-    Node* tree = nullptr;  // Æ®¸® »ı¼º
+    Node* tree = nullptr;  // íŠ¸ë¦¬ ìƒì„±
 
     while (true) {
         if (cin.eof() == true)
