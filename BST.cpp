@@ -4,10 +4,6 @@ using namespace std;
 
 // 20213062 이찬우 - BST 리포트
 
-// - 기능 성공 여부
-// 삽입: 성공
-// 삭제: 성공
-
 struct Node {
     int key;
     struct Node *left;
