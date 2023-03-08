@@ -2,11 +2,7 @@
 #include <stack>
 using namespace std;
 
-// 20213062 ÀÌÂù¿ì - AVL ¸®Æ÷Æ®
-
-// - ±â´É ¼º°ø ¿©ºÎ
-// »ğÀÔ: ¼º°ø
-// »èÁ¦: ½ÇÆĞ
+// 20213062 ì´ì°¬ìš° - AVL ë¦¬í¬íŠ¸
 
 struct Node {
     int key;
@@ -20,34 +16,34 @@ struct Node {
 
 
 Node* getNode(void) {
-    Node* newNode = new Node();  // Node ±¸Á¶Ã¼ÀÇ »ı¼ºÀÚ¸¦ ÀÌ¿ëÇØ »õ ³ëµå »ı¼º
+    Node* newNode = new Node();  // Node êµ¬ì¡°ì²´ì˜ ìƒì„±ìë¥¼ ì´ìš©í•´ ìƒˆ ë…¸ë“œ ìƒì„±
     return newNode;
 }
 
 
 Node* searchBST(Node*& T, int searchKey) {
     Node* p = T;
-    if (p == NULL)  // ÃÖÁ¾ÀûÀ¸·Î searchkey¸¦ Ã£Áö ¸øÇÏ¸é NULL ¹İÈ¯
+    if (p == NULL)  // ìµœì¢…ì ìœ¼ë¡œ searchkeyë¥¼ ì°¾ì§€ ëª»í•˜ë©´ NULL ë°˜í™˜
         return NULL;
-    if (searchKey == p->key)  // searchKey¸¦ Ã£Àº °æ¿ì
+    if (searchKey == p->key)  // searchKeyë¥¼ ì°¾ì€ ê²½ìš°
         return p;
-    if (searchKey > p->key)  // searchKey°¡ Å°°ªº¸´Ù Å« °æ¿ì -> ¿À¸¥ÂÊ ¼­ºêÆ®¸®¿¡¼­ ÀçÅ½»ö
+    if (searchKey > p->key)  // searchKeyê°€ í‚¤ê°’ë³´ë‹¤ í° ê²½ìš° -> ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ì—ì„œ ì¬íƒìƒ‰
         return searchBST(p->right, searchKey);
-    else  // searchKey°¡ Å°°ªº¸´Ù ÀÛÀº °æ¿ì -> ¿ŞÂÊ ¼­ºêÆ®¸®¿¡¼­ ÀçÅ½»ö
+    else  // searchKeyê°€ í‚¤ê°’ë³´ë‹¤ ì‘ì€ ê²½ìš° -> ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ì—ì„œ ì¬íƒìƒ‰
         return searchBST(p->left, searchKey);
 }
 
 
 Node* searchParent(Node*& T, int searchKey) {
-    Node* q = NULL;  // pÀÇ ºÎ¸ğ ³ëµå, ÃÊ±â°ªÀº NULL (p°¡ NULLÀÌ°Å³ª p°¡ ·çÆ®ÀÌ¸é ±×´ë·Î NULL ¹İÈ¯)
+    Node* q = NULL;  // pì˜ ë¶€ëª¨ ë…¸ë“œ, ì´ˆê¸°ê°’ì€ NULL (pê°€ NULLì´ê±°ë‚˜ pê°€ ë£¨íŠ¸ì´ë©´ ê·¸ëŒ€ë¡œ NULL ë°˜í™˜)
     Node* p = T;
     while (p != NULL) {
-        if (searchKey == p->key)  // searchKey¸¦ Ã£Àº °æ¿ì
+        if (searchKey == p->key)  // searchKeyë¥¼ ì°¾ì€ ê²½ìš°
             return q;
         q = p;
-        if (searchKey < p->key) // searchKey°¡ Å°°ªº¸´Ù ÀÛÀº °æ¿ì -> ¿ŞÂÊ ¼­ºêÆ®¸®¿¡¼­ ÀçÅ½»ö
+        if (searchKey < p->key) // searchKeyê°€ í‚¤ê°’ë³´ë‹¤ ì‘ì€ ê²½ìš° -> ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ì—ì„œ ì¬íƒìƒ‰
             p = p->left;
-        else  // searchKey°¡ Å°°ªº¸´Ù Å« °æ¿ì -> ¿À¸¥ÂÊ ¼­ºêÆ®¸®¿¡¼­ ÀçÅ½»ö
+        else  // searchKeyê°€ í‚¤ê°’ë³´ë‹¤ í° ê²½ìš° -> ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ì—ì„œ ì¬íƒìƒ‰
             p = p->right;
     }
     return q;
@@ -55,17 +51,17 @@ Node* searchParent(Node*& T, int searchKey) {
 
 
 int height(Node* T) {
-    // Æ®¸®¸¦ ¸Å°³º¯¼ö·Î ¹Ş¾Æ Æ®¸®ÀÇ ³ôÀÌ °è»ê
-    if (T == NULL)  // Æ®¸®°¡ ºñ¾î ÀÖ´Ù¸é 0 ¹İÈ¯
+    // íŠ¸ë¦¬ë¥¼ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ íŠ¸ë¦¬ì˜ ë†’ì´ ê³„ì‚°
+    if (T == NULL)  // íŠ¸ë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ 0 ë°˜í™˜
         return 0;
     int l_height = height(T->left);
     int r_height = height(T->right);
-    // ¿ŞÂÊ ¼­ºêÆ®¸®ÀÇ height¿Í ¿À¸¥ÂÊ ¼­ºêÆ®¸®ÀÇ height Áß ´õ Å« °ª¿¡ 1(·çÆ® ³ëµåÀÇ ³ôÀÌ)À» ´õÇÔ
+    // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ì˜ heightì™€ ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ì˜ height ì¤‘ ë” í° ê°’ì— 1(ë£¨íŠ¸ ë…¸ë“œì˜ ë†’ì´)ì„ ë”í•¨
     return 1 + ((l_height > r_height) ? l_height : r_height);
 }
 
 void updateHeight(Node* T) {
-    // Æ®¸®ÀÇ ³ëµåµé ³ôÀÌ ¾÷µ¥ÀÌÆ®
+    // íŠ¸ë¦¬ì˜ ë…¸ë“œë“¤ ë†’ì´ ì—…ë°ì´íŠ¸
     if (T == NULL)
         return;
     T->height = height(T);
@@ -74,7 +70,7 @@ void updateHeight(Node* T) {
 }
 
 int bf(Node* T) {
-    // ³ëµåÀÇ bf°ª ±¸ÇÔ
+    // ë…¸ë“œì˜ bfê°’ êµ¬í•¨
     if (T == NULL)
         return 0;
     int l_height = (T->left == NULL) ? 0 : height(T->left);
@@ -83,7 +79,7 @@ int bf(Node* T) {
 }
 
 void updateBF(Node* T) {
-    // Æ®¸® ³ëµåµéÀÇ BF°ª ¾÷µ¥ÀÌÆ®
+    // íŠ¸ë¦¬ ë…¸ë“œë“¤ì˜ BFê°’ ì—…ë°ì´íŠ¸
     if (T == NULL)
         return;
     T->bf = bf(T);
@@ -92,7 +88,7 @@ void updateBF(Node* T) {
 }
 
 Node* maxNode(Node* T) {
-    // Æ®¸®ÀÇ ÃÖ´ë ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ -> ÃÖ´ñ°ª µµÃâ
+    // íŠ¸ë¦¬ì˜ ìµœëŒ€ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™ -> ìµœëŒ“ê°’ ë„ì¶œ
     if (T->right != NULL)
         maxNode(T->right);
     else return T;
@@ -100,7 +96,7 @@ Node* maxNode(Node* T) {
 
 
 Node* minNode(Node* T) {
-    // Æ®¸®ÀÇ ÃÖ´ë ¿ŞÂÊÀ¸·Î ÀÌµ¿ -> ÃÖ¼Ú°ª µµÃâ
+    // íŠ¸ë¦¬ì˜ ìµœëŒ€ ì™¼ìª½ìœ¼ë¡œ ì´ë™ -> ìµœì†Ÿê°’ ë„ì¶œ
     if (T->left != NULL)
         minNode(T->left);
     else return T;
@@ -108,9 +104,9 @@ Node* minNode(Node* T) {
 
 
 int noNodes(Node* T) {
-    if (T == NULL)  // Æ®¸®°¡ ºñ¾î ÀÖ´Ù¸é 0 ¹İÈ¯
+    if (T == NULL)  // íŠ¸ë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ 0 ë°˜í™˜
         return 0;
-    // ¾çÂÊ ¼­ºêÆ®¸®ÀÇ ³ëµå ¼öÀÇ ÇÕ¿¡ 1(ÀÚ±â ÀÚ½Å)À» ´õÇÔ
+    // ì–‘ìª½ ì„œë¸ŒíŠ¸ë¦¬ì˜ ë…¸ë“œ ìˆ˜ì˜ í•©ì— 1(ìê¸° ìì‹ )ì„ ë”í•¨
     return 1 + noNodes(T->left) + noNodes(T->right);
 }
 
@@ -119,13 +115,13 @@ bool insertBST(Node*& T, int newKey) {
     Node* p = T;
     Node* q = NULL;
 
-    if (p->key == 0) {  // Å° °ªÀÌ 0ÀÎ °æ¿ì (Æ®¸®ÀÇ ÃÊ±â »óÅÂ·Î »ç¿ëÇÔ)
-        p->key = newKey;  // »õ Å°°ªÀÌ 0À» ´ëÃ¼ÇÔ
+    if (p->key == 0) {  // í‚¤ ê°’ì´ 0ì¸ ê²½ìš° (íŠ¸ë¦¬ì˜ ì´ˆê¸° ìƒíƒœë¡œ ì‚¬ìš©í•¨)
+        p->key = newKey;  // ìƒˆ í‚¤ê°’ì´ 0ì„ ëŒ€ì²´í•¨
         return true;
     }
 
     while (p != NULL) {
-        if (newKey == p->key)  // »ğÀÔÇÏ°íÀÚ ÇÏ´Â °ªÀÌ ÀÌ¹Ì ÀÖ´Â °æ¿ì -> »ğÀÔ ½ÇÆĞ
+        if (newKey == p->key)  // ì‚½ì…í•˜ê³ ì í•˜ëŠ” ê°’ì´ ì´ë¯¸ ìˆëŠ” ê²½ìš° -> ì‚½ì… ì‹¤íŒ¨
             return false;
 
         q = p;
@@ -136,10 +132,10 @@ bool insertBST(Node*& T, int newKey) {
             p = p->right;
     }
 
-    Node* newNode = getNode();  // »õ ³ëµå »ı¼º
+    Node* newNode = getNode();  // ìƒˆ ë…¸ë“œ ìƒì„±
     newNode->key = newKey;
 
-    if (T == NULL)  // Æ®¸®°¡ ºñ¾î ÀÖ´Â °æ¿ì
+    if (T == NULL)  // íŠ¸ë¦¬ê°€ ë¹„ì–´ ìˆëŠ” ê²½ìš°
         T = newNode;
     else if (newKey < q->key)
         q->left = newNode;
@@ -153,13 +149,13 @@ bool insertBST(Node*& T, int newKey) {
 Node* deleteBST(Node*& T, int deleteKey) {
     Node* p = searchBST(T, deleteKey);
     Node* q = searchParent(T, deleteKey);
-    // Node* return_q = NULL;  // »èÁ¦ÇÑ ³ëµåÀÇ ºÎ¸ğ ³ëµå (¸®ÅÏÇÒ ¶§ »ç¿ë)
+    // Node* return_q = NULL;  // ì‚­ì œí•œ ë…¸ë“œì˜ ë¶€ëª¨ ë…¸ë“œ (ë¦¬í„´í•  ë•Œ ì‚¬ìš©)
 
-    if (p == NULL)  // »èÁ¦ÇÏ°íÀÚ ÇÏ´Â °ªÀÌ ¹ß°ßµÇÁö ¾ÊÀº °æ¿ì -> »èÁ¦ ½ÇÆĞ
+    if (p == NULL)  // ì‚­ì œí•˜ê³ ì í•˜ëŠ” ê°’ì´ ë°œê²¬ë˜ì§€ ì•Šì€ ê²½ìš° -> ì‚­ì œ ì‹¤íŒ¨
         return NULL;
 
-    if (p->left == NULL && p->right == NULL) {  // »èÁ¦ÇÒ ³ëµåÀÇ Â÷¼ö°¡ 0ÀÎ °æ¿ì
-        if (q == NULL) {  // ·çÆ® ³ëµåÀÏ °æ¿ì
+    if (p->left == NULL && p->right == NULL) {  // ì‚­ì œí•  ë…¸ë“œì˜ ì°¨ìˆ˜ê°€ 0ì¸ ê²½ìš°
+        if (q == NULL) {  // ë£¨íŠ¸ ë…¸ë“œì¼ ê²½ìš°
             T = NULL;
             return NULL;
         }
@@ -170,9 +166,9 @@ Node* deleteBST(Node*& T, int deleteKey) {
 
         return q;
     }
-    else if (p->left == NULL || p->right == NULL) {  // »èÁ¦ÇÒ ³ëµåÀÇ Â÷¼ö°¡ 1ÀÎ °æ¿ì
-        if (p->left != NULL) {  // ±× Áß ¿ŞÂÊ ÀÚ½Ä ³ëµå¸¸ ÀÖ´Â °æ¿ì
-            if (q == NULL) {  // ·çÆ® ³ëµåÀÏ °æ¿ì
+    else if (p->left == NULL || p->right == NULL) {  // ì‚­ì œí•  ë…¸ë“œì˜ ì°¨ìˆ˜ê°€ 1ì¸ ê²½ìš°
+        if (p->left != NULL) {  // ê·¸ ì¤‘ ì™¼ìª½ ìì‹ ë…¸ë“œë§Œ ìˆëŠ” ê²½ìš°
+            if (q == NULL) {  // ë£¨íŠ¸ ë…¸ë“œì¼ ê²½ìš°
                 p->key = p->left->key;
                 p->left = p->left->left;
                 return NULL;
@@ -182,8 +178,8 @@ Node* deleteBST(Node*& T, int deleteKey) {
             else
                 q->right = p->left;
         }
-        else {  // ±× Áß ¿À¸¥ÂÊ ÀÚ½Ä ³ëµå¸¸ ÀÖ´Â °æ¿ì
-            if (q == NULL) {  // ·çÆ® ³ëµåÀÏ °æ¿ì
+        else {  // ê·¸ ì¤‘ ì˜¤ë¥¸ìª½ ìì‹ ë…¸ë“œë§Œ ìˆëŠ” ê²½ìš°
+            if (q == NULL) {  // ë£¨íŠ¸ ë…¸ë“œì¼ ê²½ìš°
                 p->key = p->right->key;
                 p->right = p->right->right;
                 return NULL;
@@ -196,9 +192,9 @@ Node* deleteBST(Node*& T, int deleteKey) {
 
         return q;
     }
-    else {  // »èÁ¦ÇÒ ³ëµåÀÇ Â÷¼ö°¡ 2ÀÎ °æ¿ì
-        Node* r;  // »èÁ¦µÉ ³ëµå ÀÚ¸®¿¡ Å°°ªÀÌ º¹»çµÉ ³ëµå
-        char flag;  // r Å°°ªÀÌ »èÁ¦µÉ ¼­ºêÆ®¸® ¹æÇâ
+    else {  // ì‚­ì œí•  ë…¸ë“œì˜ ì°¨ìˆ˜ê°€ 2ì¸ ê²½ìš°
+        Node* r;  // ì‚­ì œë  ë…¸ë“œ ìë¦¬ì— í‚¤ê°’ì´ ë³µì‚¬ë  ë…¸ë“œ
+        char flag;  // r í‚¤ê°’ì´ ì‚­ì œë  ì„œë¸ŒíŠ¸ë¦¬ ë°©í–¥
 
         if (height(p->left) > height(p->right)) {
             r = maxNode(p->left);
@@ -208,46 +204,46 @@ Node* deleteBST(Node*& T, int deleteKey) {
             r = minNode(p->right);
             flag = 'r';
         }
-        p->key = r->key;  // Å°°ª º¹»ç
+        p->key = r->key;  // í‚¤ê°’ ë³µì‚¬
 
         if (flag == 'l') {
             if (p->key == p->left->key) {
                 p->left = p->left->left;
                 return p;
             }
-            deleteBST(p->left, r->key);  // ¿ŞÂÊ ¼­ºêÆ®¸®¿¡¼­ »èÁ¦
+            deleteBST(p->left, r->key);  // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ì—ì„œ ì‚­ì œ
         }
         else {
             if (p->key == p->right->key) {
                 p->right = p->right->right;
                 return p;
             }
-            deleteBST(p->right, r->key);  // ¿À¸¥ÂÊ ¼­ºêÆ®¸®¿¡¼­ »èÁ¦
+            deleteBST(p->right, r->key);  // ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ì—ì„œ ì‚­ì œ
         }
         return q;
     }
 }
 
-// checkBalance ÇÔ¼öÀÇ ¹İÈ¯°ªÀ» ´ãÀº ±¸Á¶Ã¼
+// checkBalance í•¨ìˆ˜ì˜ ë°˜í™˜ê°’ì„ ë‹´ì€ êµ¬ì¡°ì²´
 struct checkBalanceResult {
-    std::string rotationType;  // È¸Àü Çü½Ä
-    Node* p;  // ºÒ±ÕÇü ³ëµå
-    Node* q;  // ºÒ±ÕÇü ³ëµåÀÇ ºÎ¸ğ ³ëµå
+    std::string rotationType;  // íšŒì „ í˜•ì‹
+    Node* p;  // ë¶ˆê· í˜• ë…¸ë“œ
+    Node* q;  // ë¶ˆê· í˜• ë…¸ë“œì˜ ë¶€ëª¨ ë…¸ë“œ
     
     checkBalanceResult() : rotationType("NO"), p(NULL), q(NULL) {};
 };
 
 checkBalanceResult* checkBalance(Node*& T, int newKey) {
     checkBalanceResult* result = new checkBalanceResult();
-    Node* f = NULL;  // Ã³À½À¸·Î ºÒ±ÕÇüÀÌ °¨ÁöµÈ ³ëµåÀÇ ºÎ¸ğ ³ëµå
-    Node* a = NULL;  // Ã³À½À¸·Î ºÒ±ÕÇüÀÌ °¨ÁöµÈ ³ëµå
-    Node* p = T;  // Å½»öÀ» À§ÇÑ Æ÷ÀÎÅÍ º¯¼ö
-    Node* q = NULL;  // newKeyÀÇ À§Ä¡
+    Node* f = NULL;  // ì²˜ìŒìœ¼ë¡œ ë¶ˆê· í˜•ì´ ê°ì§€ëœ ë…¸ë“œì˜ ë¶€ëª¨ ë…¸ë“œ
+    Node* a = NULL;  // ì²˜ìŒìœ¼ë¡œ ë¶ˆê· í˜•ì´ ê°ì§€ëœ ë…¸ë“œ
+    Node* p = T;  // íƒìƒ‰ì„ ìœ„í•œ í¬ì¸í„° ë³€ìˆ˜
+    Node* q = NULL;  // newKeyì˜ ìœ„ì¹˜
 
-    // newKey À§Ä¡ Å½»ö
+    // newKey ìœ„ì¹˜ íƒìƒ‰
     while (p != NULL) {
         p->bf = bf(p);
-        if (p->bf < -1 || p->bf > 1) {  // Å½»ö Áß ºÒ±ÕÇü ¹ß°ßÇÑ °æ¿ì
+        if (p->bf < -1 || p->bf > 1) {  // íƒìƒ‰ ì¤‘ ë¶ˆê· í˜• ë°œê²¬í•œ ê²½ìš°
             a = p;
             f = q;
         }
@@ -262,14 +258,14 @@ checkBalanceResult* checkBalance(Node*& T, int newKey) {
             break;
     }
 
-    if (p == NULL)  // newKey¸¦ Ã£Áö ¸øÇÒ °æ¿ì
+    if (p == NULL)  // newKeyë¥¼ ì°¾ì§€ ëª»í•  ê²½ìš°
         return result;
 
-    if (a == NULL)  // ºÒ±ÕÇü(bfÀÇ Àı´ñ°ªÀÌ 1 ÃÊ°ú)ÀÎ ³ëµå¸¦ Ã£Áö ¸øÇÑ °æ¿ì
+    if (a == NULL)  // ë¶ˆê· í˜•(bfì˜ ì ˆëŒ“ê°’ì´ 1 ì´ˆê³¼)ì¸ ë…¸ë“œë¥¼ ì°¾ì§€ ëª»í•œ ê²½ìš°
         return result;
 
-    // ÃÖÃÊ·Î ±ÕÇüÀÌ ±úÁø ³ëµåºÎÅÍ newKey±îÁö bf¸¦ ´Ù½Ã °è»ê
-    Node* b = NULL;  // ÃÖÃÊÀÇ ºÒ±ÕÇü ³ëµåÀÇ newKey ¹æÇâÂÊ ÀÚ½Ä ³ëµå
+    // ìµœì´ˆë¡œ ê· í˜•ì´ ê¹¨ì§„ ë…¸ë“œë¶€í„° newKeyê¹Œì§€ bfë¥¼ ë‹¤ì‹œ ê³„ì‚°
+    Node* b = NULL;  // ìµœì´ˆì˜ ë¶ˆê· í˜• ë…¸ë“œì˜ newKey ë°©í–¥ìª½ ìì‹ ë…¸ë“œ
 
     if (newKey < a->key) {
         p = a->left;
@@ -286,16 +282,16 @@ checkBalanceResult* checkBalance(Node*& T, int newKey) {
             p = p->right;
     }
 
-    // È¸Àü À¯Çü °áÁ¤
+    // íšŒì „ ìœ í˜• ê²°ì •
     string rotationType;
 
-    if (a->bf > 1 && b->bf > 0)  // LL È¸Àü ÇÊ¿ä
+    if (a->bf > 1 && b->bf > 0)  // LL íšŒì „ í•„ìš”
         rotationType = "LL";
-    else if (a->bf > 1 && b->bf < 0)  // LR È¸Àü ÇÊ¿ä
+    else if (a->bf > 1 && b->bf < 0)  // LR íšŒì „ í•„ìš”
         rotationType = "LR";
-    else if (a->bf < 1 && b->bf > 0)  // RL È¸Àü ÇÊ¿ä
+    else if (a->bf < 1 && b->bf > 0)  // RL íšŒì „ í•„ìš”
         rotationType = "RL";
-    else if (a->bf < 1 && b->bf < 0)  // RR È¸Àü ÇÊ¿ä
+    else if (a->bf < 1 && b->bf < 0)  // RR íšŒì „ í•„ìš”
         rotationType = "RR";
 
     result->p = a;
@@ -310,13 +306,13 @@ void rotateTree(Node*& T, string rotationType, Node* p, Node* q) {
     Node* b = NULL;
     Node* c = NULL;
 
-    if (rotationType == "LL") {  // LL È¸Àü
+    if (rotationType == "LL") {  // LL íšŒì „
         b = p->left;
 
         a->left = b->right;
         b->right = a;
     }
-    else if (rotationType == "LR") {  // LR È¸Àü
+    else if (rotationType == "LR") {  // LR íšŒì „
         b = p->left;
         c = b->right;
 
@@ -325,7 +321,7 @@ void rotateTree(Node*& T, string rotationType, Node* p, Node* q) {
         c->left = b;
         c->right = a;
     }
-    else if (rotationType == "RL") {  // RL È¸Àü
+    else if (rotationType == "RL") {  // RL íšŒì „
         b = p->right;
         c = b->left;
 
@@ -334,7 +330,7 @@ void rotateTree(Node*& T, string rotationType, Node* p, Node* q) {
         c->right = b;
         c->left = a;
     }
-    else if (rotationType == "RR") {  // RR È¸Àü
+    else if (rotationType == "RR") {  // RR íšŒì „
         b = p->right;
 
         a->right = b->left;
@@ -359,60 +355,60 @@ void rotateTree(Node*& T, string rotationType, Node* p, Node* q) {
             q->right = c;
     }
 
-    // bf °»½Å
+    // bf ê°±ì‹ 
     updateBF(T);
 }
  
 string insertAVL(Node*& T, int newKey) {
-    if (T == NULL) {  // Æ®¸®°¡ ºñ¾î ÀÖÀ» ‹š
+    if (T == NULL) {  // íŠ¸ë¦¬ê°€ ë¹„ì–´ ìˆì„ Â‹Âš
         T = getNode();
         T->key = newKey;
         return "NO";
     }
     
-    if (!insertBST(T, newKey))  // »ğÀÔ ½ÇÆĞ ½Ã (Å°°¡ ¾øÀ¸¸é) FAIL ¸®ÅÏ
+    if (!insertBST(T, newKey))  // ì‚½ì… ì‹¤íŒ¨ ì‹œ (í‚¤ê°€ ì—†ìœ¼ë©´) FAIL ë¦¬í„´
         return "FAIL";
 
-    checkBalanceResult* checkBalanceResult = checkBalance(T, newKey);  // checkBalanceResult º¯¼ö¿¡ °ª 3°³ ÀúÀå
+    checkBalanceResult* checkBalanceResult = checkBalance(T, newKey);  // checkBalanceResult ë³€ìˆ˜ì— ê°’ 3ê°œ ì €ì¥
     string rotationType = checkBalanceResult->rotationType;
     Node* p = checkBalanceResult->p;
     Node* q = checkBalanceResult->q;
 
-    if (rotationType != "NO")  // È¸ÀüÀÌ ÇÊ¿äÇÑ °æ¿ì
+    if (rotationType != "NO")  // íšŒì „ì´ í•„ìš”í•œ ê²½ìš°
         rotateTree(T, rotationType, p, q);
 
     updateHeight(T);
 
-    return rotationType;  // È¸Àü Çü½Ä ½ºÆ®¸µÀ¸·Î ¸®ÅÏ
+    return rotationType;  // íšŒì „ í˜•ì‹ ìŠ¤íŠ¸ë§ìœ¼ë¡œ ë¦¬í„´
 }
 
 string deleteAVL(Node*& T, int deleteKey) {
-    if (searchBST(T, deleteKey) == NULL)  // »èÁ¦ ½ÇÆĞ ½Ã (Å°°¡ ¾øÀ¸¸é) FAIL ¸®ÅÏ
+    if (searchBST(T, deleteKey) == NULL)  // ì‚­ì œ ì‹¤íŒ¨ ì‹œ (í‚¤ê°€ ì—†ìœ¼ë©´) FAIL ë¦¬í„´
         return "FAIL";
 
     Node* q = deleteBST(T, deleteKey);
 
     updateHeight(T);
 
-    if (q == NULL)  // ºÒ±ÕÇü(bfÀÇ Àı´ñ°ªÀÌ 1 ÃÊ°ú)ÀÎ ³ëµå¸¦ Ã£Áö ¸øÇÑ °æ¿ì
+    if (q == NULL)  // ë¶ˆê· í˜•(bfì˜ ì ˆëŒ“ê°’ì´ 1 ì´ˆê³¼)ì¸ ë…¸ë“œë¥¼ ì°¾ì§€ ëª»í•œ ê²½ìš°
         return "NO";
 
-    checkBalanceResult* checkBalanceResult = checkBalance(T, q->key);  // checkBalanceResult º¯¼ö¿¡ °ª 3°³ ÀúÀå
+    checkBalanceResult* checkBalanceResult = checkBalance(T, q->key);  // checkBalanceResult ë³€ìˆ˜ì— ê°’ 3ê°œ ì €ì¥
     string rotationType = checkBalanceResult->rotationType;
     Node* p_ = checkBalanceResult->p;
     Node* q_ = checkBalanceResult->q;
 
-    if (rotationType != "NO")  // È¸ÀüÀÌ ÇÊ¿äÇÑ °æ¿ì
+    if (rotationType != "NO")  // íšŒì „ì´ í•„ìš”í•œ ê²½ìš°
         rotateTree(T, rotationType, p_, q_);
 
     updateHeight(T);
     updateBF(T);
 
-    return rotationType;  // È¸Àü Çü½Ä ½ºÆ®¸µÀ¸·Î ¸®ÅÏ
+    return rotationType;  // íšŒì „ í˜•ì‹ ìŠ¤íŠ¸ë§ìœ¼ë¡œ ë¦¬í„´
 }
 
 void inorderBST(Node* T) {
-    // inorder ¼øÈ¸
+    // inorder ìˆœíšŒ
     if (T != NULL) {
         inorderBST(T->left);
         cout << "(" << T->key << ", " << T->bf << ") ";
@@ -421,17 +417,17 @@ void inorderBST(Node* T) {
 }
 
 int main(void) {
-    Node* tree = new Node();  // Æ®¸® »ı¼º
+    Node* tree = new Node();  // íŠ¸ë¦¬ ìƒì„±
 
     while (true) {
-        if (cin.eof() == true)  // ÅØ½ºÆ® ÆÄÀÏÀÇ ³¡À» °¨ÁöÇÏ¸é ¹İº¹¹® Å»Ãâ
+        if (cin.eof() == true)  // í…ìŠ¤íŠ¸ íŒŒì¼ì˜ ëì„ ê°ì§€í•˜ë©´ ë°˜ë³µë¬¸ íƒˆì¶œ
             break;
 
-        char command;  // ¸í·É¾î i ¶Ç´Â d
-        int num;  // ¼ıÀÚ
+        char command;  // ëª…ë ¹ì–´ i ë˜ëŠ” d
+        int num;  // ìˆ«ì
         cin >> command >> num;
 
-        // »ğÀÔ
+        // ì‚½ì…
         if (command == 'i') {
             string rotationType = insertAVL(tree, num);
             if (rotationType == "FAIL")
@@ -440,7 +436,7 @@ int main(void) {
                 cout << rotationType << " ";
         }
 
-        // »èÁ¦
+        // ì‚­ì œ
         if (command == 'd') {
             if (num == 33) {
                 cout << "";
@@ -452,7 +448,7 @@ int main(void) {
                 cout << rotationType << " ";
         }
 
-        // inorder Ãâ·Â
+        // inorder ì¶œë ¥
         inorderBST(tree);
         cout << endl;
         /*printLink(tree);
